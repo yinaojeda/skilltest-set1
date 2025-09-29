@@ -16,7 +16,6 @@ use App\Http\Requests\UpdateTaskRequest;
 class TaskController extends Controller
 {
     private TaskAssignmentService $service;
-
     public function __construct(TaskAssignmentService $service)
     {
         $this->service = $service;
@@ -35,7 +34,10 @@ class TaskController extends Controller
             ->searchByTitle($search)
             ->get();
 
-        return response()->json(['data' => $tasks]);
+        return response()->json([
+            'data' => $tasks,
+            'timestamp' => now()->format('Y-m-d H:i:s')
+        ]);
     }
 
     /**
@@ -43,7 +45,10 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return response()->json(['data' => $task->load('comments', 'assignedTo')]);
+        return response()->json([
+            'data' => $task->load('comments', 'assignedTo'),
+            'timestamp' => now()->format('Y-m-d H:i:s')
+        ]);
     }
 
     /**
@@ -73,7 +78,10 @@ class TaskController extends Controller
 
         Cache::tags(['tasks', 'projects'])->flush();
 
-        return response()->json(['data' => $task]);
+        return response()->json([
+            'data' => $task,
+            'timestamp' => now()->format('Y-m-d H:i:s')
+        ]);
     }
 
     /**

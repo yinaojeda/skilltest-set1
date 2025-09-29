@@ -18,16 +18,6 @@ class Task extends Model
 
     protected $fillable = ['title', 'description', 'status', 'due_date', 'project_id', 'assigned_to'];
 
-    public function scopeFilterByStatus($query, $status)
-    {
-        if (! empty($status)) {
-            $query->where('status', $status);
-        }
-
-        return $query;
-    }
-
-
     public function project()
     {
         return $this->belongsTo(Project::class);
