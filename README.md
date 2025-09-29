@@ -38,7 +38,7 @@ MAIL_FROM_NAME="SkillTest"
 
 php artisan migrate --seed
 
-# or to reset:
+## or to reset:
 
 php artisan migrate:fresh --seed
 
@@ -46,7 +46,7 @@ php artisan migrate:fresh --seed
 
 php artisan serve
 
-# API at http://localhost:8000
+## API at http://localhost:8000
 
 ## Start a queue worker (for notifications):
 
@@ -56,7 +56,7 @@ php artisan queue:work
 
 php artisan test
 
-# or with coverage:
+## or with coverage:
 
 ./vendor/bin/pest --coverage
 
