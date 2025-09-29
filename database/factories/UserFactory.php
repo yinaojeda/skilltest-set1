@@ -40,4 +40,28 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the model's role is admin.
+     *
+     * @return static
+     */
+    public function manager(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'manager',
+        ]);
+    }
+
+    /**
+     * Indicate that the model's role is admin.
+     *
+     * @return static
+     */
+    public function admin(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'admin',
+        ]);
+    }
 }

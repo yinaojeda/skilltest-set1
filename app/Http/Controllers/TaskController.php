@@ -8,12 +8,20 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Task;
 use App\Models\Project;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 
 /**
  * Controller for managing tasks within projects.
  */
 class TaskController extends Controller
 {
+    private TaskAssignmentService $service;
+
+    public function __construct(TaskAssignmentService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of tasks for a specific project with optional filtering and searching.
      */
@@ -41,22 +49,11 @@ class TaskController extends Controller
     /**
      * Store a newly created task in a specific project.
      */
-    public function store(StoreTaskRequest $request, Project $project, TaskAssignmentService $service)
-
+    public function store(StoreTaskRequest $request, Project $project)
     {
-        $data = $request->validated();
+        $task = $this->service->create($project, $request->validated());
 
-        $task = Task::create([
-            'title'       => $data['title'],
-            'description' => $data['description'] ?? null,
-            'status'      => $data['status'] ?? 'pending',
-            'due_date'    => $data['due_date'] ?? null,
-            'project_id'  => $project->id,
-            'assigned_to' => null,
-        ]);
-
-        $service->assign($task, $data);
-        Cache::tags('projects', 'tasks')->flush();
+        Cache::tags(['projects', 'tasks'])->flush();
 
         return response()->json(['data' => $task], 201);
     }
@@ -64,7 +61,7 @@ class TaskController extends Controller
     /**
      * Update the specified task.
      */
-    public function update(Request $request, Task $task, TaskAssignmentService $service)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
         $user = $request->user();
 
@@ -72,17 +69,9 @@ class TaskController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $data = $request->validate([
-            'title'        => 'sometimes|string|max:255',
-            'description'  => 'sometimes|nullable|string',
-            'status'       => 'sometimes|in:pending,in-progress,done',
-            'due_date'     => 'sometimes|nullable|date',
-            'assigned_to'  => 'sometimes|exists:users,id',
-        ]);
+        $task = $this->service->update($task, $request->validated());
 
-        $service->assign($task, $data); // pass the validated array
-        Cache::tags('tasks')->flush();
-        Cache::tags('projects')->flush();
+        Cache::tags(['tasks', 'projects'])->flush();
 
         return response()->json(['data' => $task]);
     }
@@ -93,8 +82,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $task->delete();
-        Cache::tags('tasks')->flush();
-        Cache::tags('projects')->flush();
+        Cache::tags(['tasks', 'projects'])->flush();
         return response()->json(['message' => 'Deleted']);
     }
 }
