@@ -11,7 +11,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +23,19 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'role',
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+    public function isManager(): bool
+    {
+        return $this->role === 'manager';
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,12 +56,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function isAdmin(): bool
+    public function projects()
     {
-        return $this->role === 'admin';
+        return $this->hasMany(Project::class, 'created_by');
     }
-    public function isManager(): bool
+
+    public function tasks()
     {
-        return $this->role === 'manager';
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
