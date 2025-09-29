@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Project;
 use App\Models\User;
-use App\Models\Comment;
 use App\Traits\CommonQueryScopes;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Comment;
 
 class Task extends Model
 {

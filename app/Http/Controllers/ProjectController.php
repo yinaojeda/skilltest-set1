@@ -28,7 +28,10 @@ class ProjectController extends Controller
                 ->get();
         });
 
-        return response()->json(['data' => $projects]);
+        return response()->json([
+            'data' => $projects,
+            'timestamp' => now()->format('Y-m-d H:i:s')
+        ]);
     }
 
     /**
@@ -36,7 +39,10 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return response()->json(['data' => $project->load('tasks')]);
+        return response()->json([
+            'data' => $project->load('tasks'),
+            'timestamp' => now()->format('Y-m-d H:i:s')
+        ]);
     }
 
     /**
@@ -57,7 +63,7 @@ class ProjectController extends Controller
 
         Cache::tags('projects')->flush();
 
-        return response()->json(['data' => $project], 201);
+        return response()->json(['data' => $project, 'timestamp' => now()->format('Y-m-d H:i:s')], 201);
     }
 
     /**
@@ -75,7 +81,7 @@ class ProjectController extends Controller
 
         Cache::tags('projects')->flush();
 
-        return response()->json(['data' => $project]);
+        return response()->json(['data' => $project, 'timestamp' => now()->format('Y-m-d H:i:s')]);
     }
 
     /**

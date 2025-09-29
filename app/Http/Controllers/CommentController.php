@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Task;
-use App\Models\Comment;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Comment;
+use App\Models\Task;    
 
 /**
  * Controller for managing comments on tasks.
@@ -46,7 +46,7 @@ class CommentController extends Controller
             'body' => 'required|string|max:1000',
         ]);
 
-        $comment = \App\Models\Comment::create([
+        $comment = Comment::create([
             'task_id' => $task->id,
             'user_id' => $user->id,
             'body'    => $data['body'],
