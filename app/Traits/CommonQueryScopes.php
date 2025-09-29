@@ -19,7 +19,7 @@ trait CommonQueryScopes
     public function scopeFilterByStatus(Builder $query, $status)
     {
         if ($status) {
-            return $query->where('status', $status);
+            return $query->where('status', $status); 
         }
         return $query;
     }
