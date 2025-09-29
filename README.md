@@ -18,14 +18,22 @@ cp .env.example .env
 composer install
 php artisan key:generate
 
+## Database Setup
+
+Run these commands in `psql` to create a dedicated user:
+
+```sql
+CREATE USER skilltest_user WITH PASSWORD 'someStrongPass';
+GRANT ALL PRIVILEGES ON DATABASE skilltest_set1 TO skilltest_user;
+
 ## Edit .env (DB creds):
 
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_DATABASE=skilltest_set1
-DB_USERNAME=postgres
-DB_PASSWORD=
+DB_USERNAME=skilltest_user
+DB_PASSWORD=someStrongPass
 
 ## Sanctum / Mail / Queue (dev-friendly defaults):
 
