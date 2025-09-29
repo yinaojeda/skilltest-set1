@@ -22,7 +22,7 @@ class ProjectController extends Controller
         $cacheKey = 'projects_list_' . md5(($status ?? '') . '|' . ($search ?? ''));
 
         $projects = Cache::tags('projects')->remember($cacheKey, 60, function () use ($status, $search) {
-            return \App\Models\Project::with('tasks')
+            return Project::with('tasks')
                 ->filterByStatus($status)
                 ->searchByTitle($search)
                 ->get();
