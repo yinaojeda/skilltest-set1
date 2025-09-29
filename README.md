@@ -1,18 +1,18 @@
 # SkillTest — Laravel API
 
-A small project management API (Users, Projects, Tasks, Comments) with Sanctum auth, role-based access, notifications, queues, caching, and Pest tests.
+A small project management API (Users, Projects, Tasks, Comments) with Sanctum auth, role-based access, notifications, queues, caching, and tests.
 
 ## Requirements
 
 -   PHP 8.1+ (with OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, JSON)
 -   Composer
--   MySQL/MariaDB (or SQLite)
+-   PostgreSQL
 -   Node/NPM (optional for dev tooling)
 -   **For coverage**: Xdebug or PCOV (optional)
 
 ## Setup
 
-git clone <your-repo-url>
+git clone [https://github.com/yinaojeda/skilltest-set1]
 cd <your-folder>
 cp .env.example .env
 composer install
@@ -23,7 +23,7 @@ php artisan key:generate
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=practice
+DB_DATABASE=skilltest_set1
 DB_USERNAME=postgres
 DB_PASSWORD=
 
